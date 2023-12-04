@@ -10,6 +10,7 @@ interface Theme {
 
 interface ButtonProps {
   theme?: Theme;
+  inlineCss?: string;
 }
 
 const ButtonContainer = styled.button<ButtonProps>`
@@ -22,6 +23,7 @@ const ButtonContainer = styled.button<ButtonProps>`
   text-align: center;
   padding: 13px 88px;
   cursor: pointer;
+  ${(props) => props.inlineCss};
 `;
 
 export { ButtonContainer };

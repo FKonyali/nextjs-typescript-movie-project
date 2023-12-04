@@ -23,6 +23,7 @@ function Image({ src = '', alt = '', aspectRatio = '62.5%', inlineCss = null, ..
   }, [src]);
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log('e', e)
     if (e.target instanceof HTMLImageElement) {
       e.target.setAttribute('style', 'opacity: 1');
     }
