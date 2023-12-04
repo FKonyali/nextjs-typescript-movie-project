@@ -4,7 +4,7 @@ import { ButtonContainer } from './style';
 
 interface ButtonProps {
   children: ReactNode;
-  inlineCss: string;
+  inlineCss?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 

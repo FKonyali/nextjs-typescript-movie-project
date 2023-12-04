@@ -4,6 +4,7 @@ import Head from 'next/head';
 import React from 'react';
 //components
 import Layout from 'components/Layout';
+import Header from 'components/Header';
 //helpers & plugins & hooks
 import 'plugins/axios';
 //styling
@@ -34,6 +35,7 @@ function App({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <Fonts />
           <Reset theme={theme} />
+          <Header />
           <Layout>
             <Component {...pageProps} />
           </Layout>

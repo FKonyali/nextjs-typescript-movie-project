@@ -10,4 +10,9 @@ const useMovieQuery = (): UseQueryResult<MovieData> =>
     staleTime: Infinity,
   });
 
-export { useMovieQuery };
+const useMovieDetailQuery = (id: string): UseQueryResult<MovieData> =>
+  useQuery(`movie/${id}`, () => getData({ url: '', params: { i: id } }), {
+    staleTime: Infinity,
+  });
+
+export { useMovieQuery, useMovieDetailQuery };

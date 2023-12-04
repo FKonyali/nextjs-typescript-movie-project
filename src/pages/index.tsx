@@ -5,7 +5,6 @@ import MovieBoxContainer from 'components/MovieBoxContainer'
 import SkeletonLoading from 'components/SkeletonLoading'
 import MovieBoxItem from 'components/MovieBoxItem'
 import Container from 'components/Container'
-import Header from 'components/Header'
 import Button from 'components/Button'
 //queries
 import { useMovieQuery } from 'plugins/queries'
@@ -15,6 +14,7 @@ interface MovieData {
     Title: string;
     Year: string;
     Poster: string;
+    imdbID: string;
   }>;
 }
 
@@ -22,7 +22,7 @@ function Home() {
   const router = useRouter()
 
   const moviewQuery = useMovieQuery()
-  const moviesData = moviewQuery?.data as MovieData
+  const moviesData = moviewQuery.data as MovieData
 
   const handleClickMovieBox = (id: string) => {
     router.push(`/detail/${id}`)
@@ -34,7 +34,6 @@ function Home() {
 
   return (
     <Container>
-      <Header />
       <MovieBoxContainer>
         {
           moviewQuery.isLoading ?
@@ -58,7 +57,7 @@ function Home() {
                         description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum varius ultricies. Ut malesuada lobortis hendrerit. Aenean tincidunt cursus orci in auctor.'
                         point={item?.Year}
                         imageUrl={item?.Poster}
-                        handleOnClick={() => handleClickMovieBox('id')}
+                        handleOnClick={() => handleClickMovieBox(item?.imdbID)}
                       />
                     )
                   })

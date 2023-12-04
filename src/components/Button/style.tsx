@@ -24,6 +24,9 @@ const ButtonContainer = styled.button<ButtonProps>`
   padding: 13px 88px;
   cursor: pointer;
   ${(props) => props.inlineCss};
+  @media (max-width: 574px) {
+    padding: 13px 34px;
+  }
 `;
 
 export { ButtonContainer };

@@ -19,6 +19,7 @@ interface MovieBoxItemProps {
   imageUrl?: string;
   description?: string;
   handleOnClick?: React.MouseEventHandler<HTMLDivElement>;
+  imdbID?: string;
 }
 
 function MovieBoxItem({ title, point, imageUrl, description, handleOnClick }: MovieBoxItemProps) {

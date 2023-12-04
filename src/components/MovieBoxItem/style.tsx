@@ -54,6 +54,9 @@ const MovieBoxItemDetail = styled.div<StyledProps>`
   justify-content: space-between;
   flex-wrap: wrap;
   flex: 1;
+  @media (max-width: 574px) {
+    width: 100%;
+  }
 `;
 
 const MovieBoxItemParagraph = styled.div<StyledProps>`
@@ -61,6 +64,10 @@ const MovieBoxItemParagraph = styled.div<StyledProps>`
   color: ${(props) => props.theme.colors.dark['80']};
   max-width: 100%;
   width: 345px;
+  @media (max-width: 574px) {
+    width: 100%;
+    margin: 15px 0;
+  }
 `;
 
 const MovieBoxItemButton = styled.div`
