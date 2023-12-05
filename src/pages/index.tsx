@@ -111,6 +111,7 @@ function Home() {
                   allMovieData?.map((item) => {
                     return (
                       <MovieBoxItem
+                        key={item?.imdbID}
                         title={item?.Title}
                         description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum varius ultricies. Ut malesuada lobortis hendrerit. Aenean tincidunt cursus orci in auctor.'
                         point={item?.Year}
