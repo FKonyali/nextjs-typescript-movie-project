@@ -87,7 +87,6 @@ function Home() {
   }
 
   useEffect(() => {
-    console.log('homeScrollOffset', homeScrollOffset)
     window.scrollTo(0, homeScrollOffset);
   }, [])
 
