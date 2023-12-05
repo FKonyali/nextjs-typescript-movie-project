@@ -6,10 +6,11 @@ interface ButtonProps {
   children: ReactNode;
   inlineCss?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 }
 
-function Button({ children, inlineCss, onClick }: ButtonProps) {
-  return <ButtonContainer inlineCss={inlineCss} onClick={onClick}>{children}</ButtonContainer>;
+function Button({ children, inlineCss, onClick, disabled = false }: ButtonProps) {
+  return <ButtonContainer inlineCss={inlineCss} onClick={onClick} disabled={disabled}>{children}</ButtonContainer>;
 }
 
 export default Button;

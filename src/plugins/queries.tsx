@@ -5,9 +5,25 @@ interface MovieData {
   result: any;
 }
 
-const useMovieQuery = (): UseQueryResult<MovieData> =>
+interface UseMovieQueryProps {
+  callbacks?: {
+    onSuccess?: (response: MovieData) => void;
+    onError?: () => void;
+  };
+}
+
+const useMovieQuery = ({
+  callbacks = {},
+}: UseMovieQueryProps = {}): UseQueryResult<MovieData> =>
   useQuery('movies', () => getData({ url: '', params: { s: 'movie' } }), {
     staleTime: Infinity,
+    onSuccess: (response) => {
+      callbacks?.onSuccess?.(response);
+    },
+    onError: (e) => {
+      console.log(e);
+      callbacks?.onError?.();
+    },
   });
 
 const useMovieDetailQuery = (id: string): UseQueryResult<MovieData> =>

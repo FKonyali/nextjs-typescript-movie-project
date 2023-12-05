@@ -1,13 +1,16 @@
+import { useQueryClient } from 'react-query'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 //components
 import MovieBoxContainer from 'components/MovieBoxContainer'
 import SkeletonLoading from 'components/SkeletonLoading'
 import MovieBoxItem from 'components/MovieBoxItem'
 import Container from 'components/Container'
 import Button from 'components/Button'
-//queries
+//queries && mutations && plugins
+import { useMoreMoviesMutation } from 'plugins/mutations'
 import { useMovieQuery } from 'plugins/queries'
+import useStore from 'store/useStore'
 
 interface MovieData {
   Search?: Array<{
@@ -21,16 +24,72 @@ interface MovieData {
 function Home() {
   const router = useRouter()
 
-  const moviewQuery = useMovieQuery()
-  const moviesData = moviewQuery.data as MovieData
+  const queryClient = useQueryClient()
+
+  const moviewQuery = useMovieQuery({
+    callbacks: {
+      onSuccess: (data: any) => {
+        const dataSearch = data?.Search
+        let activePage = movieActivePage
+
+        setMovieActivePage(activePage++)
+        setAllMovieData([
+          ...allMovieData,
+          ...dataSearch,
+        ])
+      }
+    }
+  })
+
+  const movieActivePage = useStore((state) => state.movieActivePage)
+  const setMovieActivePage = useStore((state) => state.setMovieActivePage)
+
+  const allMovieData = useStore((state) => state.allMovieData)
+  const setAllMovieData = useStore((state) => state.setAllMovieData)
+
+  const homeScrollOffset = useStore((state) => state.homeScrollOffset)
+  const setHomeScrollOffset = useStore((state) => state.setHomeScrollOffset)
+
+  const getMoreMovies = useMoreMoviesMutation({
+    queryClient,
+    callbacks: {
+      onSuccess: (data: any) => {
+        const dataSearch = data?.Search
+
+        let activePage = movieActivePage + 1
+
+        if (data?.totalResults !== activePage) {
+          setMovieActivePage(activePage)
+
+          setAllMovieData([
+            ...allMovieData,
+            ...dataSearch,
+          ])
+        }
+
+      }
+    }
+  })
 
   const handleClickMovieBox = (id: string) => {
     router.push(`/detail/${id}`)
+
+    setHomeScrollOffset(document.documentElement.scrollTop)
   }
 
   const handleMoreButtonClick = () => {
-    
+    let activePage = movieActivePage + 1
+
+    getMoreMovies.mutate({
+      s: 'movie',
+      page: activePage,
+    })
   }
+
+  useEffect(() => {
+    console.log('homeScrollOffset', homeScrollOffset)
+    window.scrollTo(0, homeScrollOffset);
+  }, [])
 
   return (
     <Container>
@@ -50,7 +109,7 @@ function Home() {
               )) : (
               <>
                 {
-                  moviesData?.Search?.map((item) => {
+                  allMovieData?.map((item) => {
                     return (
                       <MovieBoxItem
                         title={item?.Title}
@@ -62,7 +121,31 @@ function Home() {
                     )
                   })
                 }
-                <Button inlineCss={`margin: 0 auto; display: block`} onClick={handleMoreButtonClick}> More Movie (+10)</Button>
+                {
+                  (getMoreMovies.isSuccess || getMoreMovies.status === 'idle') ? (
+                    <Button
+                      inlineCss={`
+                        margin: 0 auto; 
+                        display: block;
+                      `}
+                      onClick={handleMoreButtonClick}
+                    >
+                      More Movie (+10)
+                    </Button>
+                  ) : (
+                    Array(3)
+                      .fill('')
+                      .map((item, index) => (
+                        <SkeletonLoading
+                          key={index}
+                          inlineCss={`
+                            height: 305px;
+                            margin-bottom: 20px;
+                          `}
+                        />
+                      ))
+                  )
+                }
               </>
             )
         }
